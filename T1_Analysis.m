@@ -27,15 +27,22 @@
 %                   D:\felipe\Microscope\Software\T1_analysis_Matlab
 %                   The source code was cleaned.
 %                   Source code uploaded to Github. fpm.-
+%
+% 2021.01.17 v0.4 : The stability of the fiting of a T1 curve was improved
+%                   by decreasing the tolerances and increasing the maximum
+%                   iterations. Also, for the rolling window calculation,
+%                   the result of one fitting is now given as initial 
+%                   condition to the fitting of the next window.
+%                   modified files: ProcessSegments.m and biexp_model.m
 
 %% Folder to analyse
 % Path to the folder where the data files are.
-file_path = 'D:\2019\2019.06.06 - H2O2-UV_long\binary_files\';
+file_path = 'D:\UMCG\2021\Alina - Nitric oxide paper\NO data\';
 
 %% Parameters
-PROCESS_ALL = false; % Activates / deactivates the calculation and the fitting of the T1 curve.
+PROCESS_ALL = true; % Activates / deactivates the calculation and the fitting of the T1 curve.
 SEGMENT = false; % Activates / deactivates the segmentation analysis of the data.
-DYNAMICS = false; % Activates / deactivates the runing window T1 calculation.
+DYNAMICS = true; % Activates / deactivates the runing window T1 calculation.
 
 q_seg = 24; % Quantity of segments to chop the data to.
 
@@ -83,8 +90,8 @@ end
 %% ====================== Calculate dynamics ============================
 if DYNAMICS == true
     % Local parameters
-    win_size = 5000;
-    shift_size = 50;
+    win_size = 7000;
+    shift_size = 10;
     
     % Calculate the time of each sample.
     total_time = 16 + 57/60; % minutes

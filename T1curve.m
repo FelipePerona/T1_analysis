@@ -276,7 +276,7 @@ classdef T1curve < handle
             end
         end
         
-        %% Calculate the T1 constants spliting the dataset to 'segments' subsets.
+        %% Calculate the T1 constants spliting the dataset into 'segments' subsets.
         function T1s = getSegments(obj,segments,norm,plt)
             % Check the optional parameter
             if exist('norm','var') == 0
@@ -458,7 +458,7 @@ classdef T1curve < handle
 
                 % Find the runs bellow and beyond the diff thresholds
                 filter_dif = dq_phot < dif_low | dq_phot > dif_high;
-                filter_dif = [filter_dif; 0] | [0; filter_dif]; 
+                filter_dif = [filter_dif; 0] | [0; filter_dif];
 
                 % force a range of data to remove
                 range = [1:150];

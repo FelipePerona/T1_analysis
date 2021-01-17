@@ -1,11 +1,18 @@
-function [y_fitted, params, y_TC, resnorm] = biexp_model(dt, y)
+function [y_fitted, params, y_TC, resnorm] = biexp_model(dt, y, varargin)
     ylow = min(y);
     yhigh = max(y);
     contrast = (yhigh - ylow);
     
     % Initial values
-    x0 = [ylow, contrast/2, 1,  contrast/2, 1];
-
+    % Get the initial values if there were given to the function
+    n_arg = length(varargin);
+    if n_arg == 0
+        x0 = [ylow, contrast/2, 1,  contrast/2, 1];
+        disp('Default x0')
+    else
+        x0 = [varargin{:}];
+    end
+    
     % Parameters to find
     % x(1) = B
     % x(2) = A1
@@ -20,9 +27,9 @@ function [y_fitted, params, y_TC, resnorm] = biexp_model(dt, y)
     ub = [yhigh, contrast , 1e5, contrast , 1e5];
 
     % Fitting
-    options = optimoptions('lsqcurvefit','FunctionTolerance',1e-8,'MaxIterations',1e4);
+    options = optimoptions('lsqcurvefit','FunctionTolerance',1e-9,'MaxIterations',1e4,'MaxFunctionEvaluations',1e4,'StepTolerance',1e-9);
     [params,resnorm,~,~,~] = lsqcurvefit(F,x0,dt,y,lb,ub,options);
-
+    
     % Choose the slower time constant
     y_fitted = F(params,dt);
     y_TC = F(params,max([params(3) params(5)]));

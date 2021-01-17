@@ -6,7 +6,7 @@ function T1_data = read_T1_file(filepath)
     % Read the first byte
     file_type = fread(fid, [1,1],'uint8','ieee-be');
     
-    % Close teh file
+    % Close the file
     fclose(fid);
     
     % If the byte value is 254, the file is binary. If the value is 80,
